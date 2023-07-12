@@ -111,28 +111,41 @@ const CalendarModal = ({
 
     if (activeEvent) {
       const eventData = {
-        user: { name: name },
-        notes: notes,
-        title: title,
-        start_date: start,
-        end_date: end,
-      };
-      const index = mainDataMock.findIndex(
-        (event) => event.id === activeEvent.id
-      );
-      if (index !== -1) {
-        mainDataMock[index] = eventData;
-      }
+        formValues
+       
+      };      
+        // const eventData = {
+        //   user_name: name,
+        //   notes: notes,
+        //   title: title,
+        //   start_date: start,
+        //   end_date: end,
+        // };
+        // const response = await axios.put(
+        //   `${BASE_URL}api/event/${activeEvent.id}`,
+        //   eventData
+        // );
+     
       setActiveEvent(false);
     } else {
       const eventData = {
-        user: {name:name},
-        notes: notes,
-        title: title,
-        start_date: start,
-        end_date: end,
+        ...formValues,
+        id: new Date().getTime(),
+        user: {
+          _id: '123',
+          name,
+        },
       };
       mainDataMock.push(eventData);
+
+      //  const eventData = {
+      //    user_name: name,
+      //    notes: notes,
+      //    title: title,
+      //    start_date: start,
+      //    end_date: end,
+      //  };
+      //  const response = await axios.post(`${BASE_URL}api/event`, eventData);
     }
 
     setisTitleValid(true);

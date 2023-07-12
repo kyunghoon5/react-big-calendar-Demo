@@ -9,6 +9,21 @@ const DeleteEvent = ({ activeEvent, setActiveEvent }) => {
   const receiveEventMock = mock.receive;
 
   const handleDelete = async () => {
+    //      try {
+    //     const confirmed = window.confirm(
+    //       `Are you sure you want to delete "${activeEvent.title}" by ${activeEvent.user.name}?`
+    //     );
+    //     if (confirmed) {
+    //       const response = await axios.delete(
+    //         `${BASE_URL}api/event/${activeEvent.id}`
+    //       );
+    //       setActiveEvent(false);
+    //    window.location.reload();
+    //     }
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // };
     try {
       const confirmed = window.confirm(
         `Are you sure you want to delete "${activeEvent.title}" by ${activeEvent.user.name}?`
