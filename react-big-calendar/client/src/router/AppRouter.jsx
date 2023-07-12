@@ -8,8 +8,8 @@ const AppRouter = () => {
     <>
       <BrowserRouter>
         <Routes>
-          <Route index element={<MainCalendar />} />
-          <Route path="/usercalendar" element={<UserCalendar />} />
+          <Route index element={<UserCalendar />} />
+          <Route path="/usercalendar" element={<MainCalendar />} />
         </Routes>
       </BrowserRouter>
     </>

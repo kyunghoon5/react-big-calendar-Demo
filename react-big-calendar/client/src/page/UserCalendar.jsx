@@ -13,11 +13,13 @@ import { CalendarEvent } from '../components/calendar/CalendarEvent';
 const localizer = momentLocalizer(moment);
 const UserCalendar = () => {
     const mainDataMock = mock.mock;
+     const salesmanTripMock = mock.trips;
+     const receiveEventMock = mock.receive;
 
   const [activeEvent, setActiveEvent] = useState(false);
 
   // const { mainData } = useAPIData(activeEvent);
-
+console.log(activeEvent);
   const convertedMainData = mainDataMock.map((obj) => {
     return {
       id: obj.id,
@@ -26,8 +28,72 @@ const UserCalendar = () => {
       start: moment.utc(obj.start).utc().toDate(),
       end: moment.utc(obj.end).utc().toDate(),
       user: obj.user,
+      recdate: 0,
     };
-  });  
+  });
+
+  const convertedMainData2 = salesmanTripMock.map((obj) => {
+    return {
+      title: 'Business Trip',
+      notes: obj.notes,
+      start: moment(obj.start_dte).utc().add(4, 'hours').toDate(),
+      end: moment(obj.end_dte).utc().add(4, 'hours').toDate(),
+      allDay: true,
+      user: { name: obj.SalesmanName },
+      recdate: 0,
+    };
+  });
+
+  const convertedMainData3 = receiveEventMock.map((obj) => {
+    return {
+      title: 'Shipment',
+      notes: obj.notes,
+      start: moment(obj.reqdate).utc().add(4, 'hours').toDate(),
+      end: moment(obj.reqdate).utc().add(4, 'hours').toDate(),
+      allDay: true,
+      user: { name: obj.invno },
+      recdate: obj.recdate,
+    };
+  });
+
+  const mergedData = [
+    ...convertedMainData,
+    ...convertedMainData2,
+    ...convertedMainData3,
+  ];
+
+  const eventStyleGetter = (event, note, start, end, allDay, user, recdate) => {
+    const style = {
+      backgroundColor: '#367cf7',
+      borderRadius: '9px',
+      opacity: 0.8,
+      color: '#fff',
+    };
+    if (
+      event.user.name === 'TONY' ||
+      event.user.name === 'ANDREW' ||
+      event.user.name === 'MIKE' ||
+      event.user.name === 'DAVID' ||
+      event.user.name === 'LEE' ||
+      event.user.name === 'JOSE' ||
+      event.user.name === 'JAMES' ||
+      event.user.name === 'JOHN' ||
+      event.user.name === 'CHRIS'
+    ) {
+      style.backgroundColor = '#ff9900';
+    }
+    if (event.title === 'Shipment') {
+      style.backgroundColor = '#5beb34';
+    }
+    if (event.recdate == null) {
+      style.backgroundColor = '#BDB889';
+    }
+    if (event.title == 'Holiday') {
+      style.backgroundColor = '#73C1EF';
+    }
+
+    return { style };
+  };
  
 
   
@@ -46,22 +112,13 @@ const UserCalendar = () => {
     setActiveEvent(false);
   };
 
-  const eventStyleGetter = (event, start, end, isSelected) => {
-    const style = {
-      backgroundColor: '#367cf7',
-      borderRadius: '9px',
-      opacity: 0.8,
-      color: '#fff',
-    };
 
-    return { style };
-  };
 
   return (
     <div>
       <div style={{ height: '100vh' }}>
         <Calendar
-          events={convertedMainData}
+          events={mergedData}
           eventPropGetter={eventStyleGetter}
           onDoubleClickEvent={onDoubleClick}
           step={60}
